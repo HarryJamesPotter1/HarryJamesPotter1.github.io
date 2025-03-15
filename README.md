@@ -1,2 +1,2 @@
 # HarryJamesPotter1.github.io
-A captcha that only lets bot through
+We created a Captcha (Used to ensure a user is human) for bots, We have three tests that aim to verify that the user is a bot. The tests are nearly impossible for a human to complete! If all three games are completed, we can conclude that the user is a bot! Would you agree that our project is pretty stupid? You can pass every test by pasting a js script in the console of your browser this will emulate what a bot would do to pass the test.
