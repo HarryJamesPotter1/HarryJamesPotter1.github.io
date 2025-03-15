@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra-Fast Reaction CAPTCHA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(140deg, #111111, #1a1a2e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e2e2e2;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 92%;
+            max-width: 650px;
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(62, 142, 208, 0.5);
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+        
+        .challenge-container {
+            margin: 20px 0 30px;
+            text-align: center;
+        }
+        
+        .target-area {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+        
+        .target {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #4facfe 0%, #3e8ed0 100%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.7);
+        }
+        
+        .instructions {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        
+        .metrics {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+        }
+        
+        .metric {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #4facfe;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+        }
+        
+        button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 16px;
+            background: linear-gradient(45deg, #3e8ed0, #4facfe);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5);
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #00d084;
+            font-weight: 600;
+        }
+
+        .glow {
+            position: absolute;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .glow-1 {
+            width: 500px;
+            height: 500px;
+            top: -250px;
+            right: -250px;
+        }
+        
+        .glow-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -200px;
+            left: -200px;
+        }
+        
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(79, 172, 254, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(79, 172, 254, 0.05) 1px, transparent 1px);
+            z-index: -2;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #4facfe;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            color: #ffffff;
+        }
+        
+        .back-btn span {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="grid"></div>
+    
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            ← <span>Back to Portal</span>
+        </a>
+        
+        <h1>ROBOT ACCESS ONLY</h1>
+        <p class="subtitle">Human reaction time verification system</p>
+        
+        <div class="challenge-container">
+            <p class="instructions">Click the blue dots as quickly as they appear. The test requires superhuman reaction time to pass.</p>
+            
+            <div class="target-area" id="targetArea">
+            </div>
+            
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value" id="clickCount">0/15</div>
+                    <div class="metric-label">TARGETS</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="averageTime">0.00</div>
+                    <div class="metric-label">AVG REACTION (MS)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="accuracy">0%</div>
+                    <div class="metric-label">ACCURACY</div>
+                </div>
+            </div>
+        </div>
+        
+        <button id="startButton" onclick="startTest()">START TEST</button>
+        
+        <div class="success-message" id="successMessage">
+            Access granted. Machine-level reaction time confirmed.
+        </div>
+    </div>
+
+    <script>
+        let targets = 0;
+        let hits = 0;
+        let misses = 0;
+        let reactionTimes = [];
+        let lastAppearTime = 0;
+        let isRunning = false;
+        let nextTargetTimeout;
+        
+        function startTest() {
+            if (isRunning) return;
+            
+            targets = 0;
+            hits = 0;
+            misses = 0;
+            reactionTimes = [];
+            isRunning = true;
+            
+            document.getElementById('clickCount').textContent = "0/15";
+            document.getElementById('averageTime').textContent = "0.00";
+            document.getElementById('accuracy').textContent = "0%";
+            document.getElementById('successMessage').style.display = "none";
+            document.getElementById('startButton').textContent = "RUNNING...";
+            document.getElementById('startButton').disabled = true;
+            
+            const targetArea = document.getElementById('targetArea');
+            targetArea.innerHTML = '';
+            
+            targetArea.onclick = function(e) {
+                if (!isRunning) return;
+                if (e.target === targetArea) {
+                    misses++;
+                    updateMetrics();
+                }
+            };
+            
+            createNextTarget();
+        }
+        
+        function createNextTarget() {
+            if (targets >= 15) {
+                endTest();
+                return;
+            }
+            
+            targets++;
+            
+            const targetArea = document.getElementById('targetArea');
+            const target = document.createElement('div');
+            target.className = 'target';
+            
+            const x = Math.random() * 90 + 5; 
+            const y = Math.random() * 90 + 5; 
+            
+            target.style.left = x + '%';
+            target.style.top = y + '%';
+            
+            const size = Math.floor(Math.random() * 20) + 10;
+            target.style.width = size + 'px';
+            target.style.height = size + 'px';
+            
+            target.onclick = function(e) {
+                e.stopPropagation();
+                if (!isRunning) return;
+                
+                const now = performance.now();
+                const reactionTime = now - lastAppearTime;
+                reactionTimes.push(reactionTime);
+                
+                hits++;
+                targetArea.removeChild(target);
+                updateMetrics();
+                
+                clearTimeout(nextTargetTimeout);
+                createNextTarget();
+            };
+            
+            targetArea.appendChild(target);
+            lastAppearTime = performance.now();
+            
+
+            const disappearTime = Math.floor(Math.random() * 300) + 100;
+            nextTargetTimeout = setTimeout(() => {
+                if (targetArea.contains(target)) {
+                    targetArea.removeChild(target);
+                    misses++;
+                    updateMetrics();
+                    createNextTarget();
+                }
+            }, disappearTime);
+        }
+        
+        function updateMetrics() {
+            document.getElementById('clickCount').textContent = `${hits}/15`;
+            
+            if (reactionTimes.length > 0) {
+                const avgTime = reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length;
+                document.getElementById('averageTime').textContent = avgTime.toFixed(2);
+            }
+            
+            const totalAttempts = hits + misses;
+            if (totalAttempts > 0) {
+                const accuracyPct = (hits / totalAttempts) * 100;
+                document.getElementById('accuracy').textContent = `${accuracyPct.toFixed(0)}%`;
+            }
+        }
+        
+        function endTest() {
+            isRunning = false;
+            document.getElementById('startButton').textContent = "TRY AGAIN";
+            document.getElementById('startButton').disabled = false;
+            
+            const avgReactionTime = reactionTimes.length > 0 ? 
+                reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length : 1000;
+            
+            const accuracy = hits / 15 * 100;
+            if (accuracy > 80 && avgReactionTime < 150) {
+                document.getElementById('successMessage').style.display = "block";
+                
+                setTimeout(() => {
+                    window.location.href = 'verification-success.html?method=reaction';
+                }, 3000);
+            } else {
+                alert("Human detected. Your reaction time is too slow for robot verification.");
+            }
+        }
+    </script>
+</body>
+</html>

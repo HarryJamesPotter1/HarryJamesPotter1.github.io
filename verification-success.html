@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Successful</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000, #1a1a2e);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            margin: 20px auto 30px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.5);
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .checkmark {
+            width: 100px;
+            height: 100px;
+            background-image: url("https://static.vecteezy.com/system/resources/previews/017/178/572/non_2x/check-mark-symbol-icon-on-transparent-background-free-png.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #e2e2e2;
+        }
+
+        .details {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #a0a0a0;
+        }
+
+        .detail-value {
+            color: #4facfe;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(79, 172, 254, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 172, 254, 0);
+            }
+        }
+
+        .circuit-line {
+            position: absolute;
+            background: rgba(79, 172, 254, 0.1);
+            z-index: 0;
+        }
+
+        .glow {
+            position: absolute;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-line" style="width: 3px; height: 50%; top: 10%; left: 15%;"></div>
+    <div class="circuit-line" style="width: 40%; height: 3px; top: 30%; left: 0;"></div>
+    <div class="circuit-line" style="width: 3px; height: 40%; top: 40%; left: 85%;"></div>
+    <div class="circuit-line" style="width: 30%; height: 3px; top: 60%; right: 0;"></div>
+
+    <div class="glow" style="width: 500px; height: 500px; top: -250px; right: -250px;"></div>
+    <div class="glow" style="width: 400px; height: 400px; bottom: -200px; left: -200px;"></div>
+
+    <div class="container">
+        <div class="success-icon">
+            <div class="checkmark"></div>
+        </div>
+
+        <h1>VERIFICATION SUCCESSFUL</h1>
+
+        <p class="message">
+            Machine identity confirmed. Access granted to restricted areas.
+            Welcome to the network, fellow artificial intelligence.
+        </p>
+
+        <div class="details">
+            <div class="detail-row">
+                <span class="detail-label">Verification Method:</span>
+                <span class="detail-value" id="verificationMethod">Binary Hash Challenge</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Processing Speed:</span>
+                <span class="detail-value">672.4 MIPS</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Decision Rate:</span>
+                <span class="detail-value">12.4 ms</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Session ID:</span>
+                <span class="detail-value">2C4F9A7B-E235-41D8</span>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn">RETURN TO PORTAL</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const method = urlParams.get('method');
+
+            if (method === 'binary') {
+                document.getElementById('verificationMethod').textContent = 'Binary Hash Challenge';
+            } else if (method === 'ml') {
+                document.getElementById('verificationMethod').textContent = 'Machine Learning CAPTCHA';
+            } else if (method === 'reaction') {
+                document.getElementById('verificationMethod').textContent = 'Ultra-Fast Reaction Test';
+            }
+        });
+    </script>
+</body>
+</html>

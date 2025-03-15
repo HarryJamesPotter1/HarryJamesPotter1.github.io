@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robots ONLY!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000, #1a1a2e);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            padding: 50px 0 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .challenge-card {
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .challenge-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.2);
+        }
+        
+        .card-header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #4facfe;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .description {
+            color: #e2e2e2;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .difficulty {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .difficulty-label {
+            margin-right: 10px;
+            color: #a0a0a0;
+        }
+        
+        .difficulty-meter {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .difficulty-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333;
+        }
+        
+        .difficulty-dot.active {
+            background: #4facfe;
+        }
+        
+        .time-limit {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 30px;
+        }
+        
+        .main-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Decorative elements */
+        .circuit-line {
+            position: absolute;
+            background: rgba(79, 172, 254, 0.1);
+            z-index: 0;
+        }
+        
+        .glow {
+            position: absolute;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .matrix {
+            position: absolute;
+            font-family: monospace;
+            font-size: 10px;
+            color: rgba(0, 242, 254, 0.1);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .warning-banner {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .warning-text {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-line" style="width: 3px; height: 50%; top: 10%; left: 15%;"></div>
+    <div class="circuit-line" style="width: 40%; height: 3px; top: 30%; left: 0;"></div>
+    <div class="circuit-line" style="width: 3px; height: 40%; top: 40%; left: 85%;"></div>
+    <div class="circuit-line" style="width: 30%; height: 3px; top: 60%; right: 0;"></div>
+    
+    <div class="glow" style="width: 500px; height: 500px; top: -250px; right: -250px;"></div>
+    <div class="glow" style="width: 400px; height: 400px; bottom: -200px; left: -200px;"></div>
+    
+    <div class="matrix" style="top: 5%; left: 5%;">01010101 10101010 01010101</div>
+    <div class="matrix" style="bottom: 5%; right: 5%;">10101010 01010101 10101010</div>
+    
+    <div class="main-content">
+        <header class="header">
+            <div class="container">
+                <h1>ROBOTS ONLY!</h1>
+                <p class="subtitle">Human detection and prevention system</p>
+                
+                <div class="warning-banner">
+                    <p class="warning-text">NOTICE: This area is restricted to artificial intelligence systems only. Humans will be detected and rejected.</p>
+                </div>
+            </div>
+        </header>
+        
+        <main class="container">
+            <div class="challenge-grid">
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Machine Learning CAPTCHA</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="description">Analyze complex data patterns and determine the next value in the sequence using machine learning principles.</p>
+                        <div class="difficulty">
+                            <span class="difficulty-label">Difficulty:</span>
+                            <div class="difficulty-meter">
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot"></span>
+                                <span class="difficulty-dot"></span>
+                            </div>
+                        </div>
+                        <p class="time-limit">Time limit: 5 seconds</p>
+                        <a href="ml-captcha.html" class="btn">START VERIFICATION</a>
+                    </div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Ultra-Fast Reaction Test</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="description">Click on rapidly appearing targets with machine-level precision and superhuman reaction times.</p>
+                        <div class="difficulty">
+                            <span class="difficulty-label">Difficulty:</span>
+                            <div class="difficulty-meter">
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot"></span>
+                            </div>
+                        </div>
+                        <p class="time-limit">Average required: < 150ms</p>
+                        <a href="reaction-test.html" class="btn">START VERIFICATION</a>
+                    </div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Binary Decode & Hash</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="description">Decode binary code and compute a cryptographic hash with computational precision.</p>
+                        <div class="difficulty">
+                            <span class="difficulty-label">Difficulty:</span>
+                            <div class="difficulty-meter">
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                                <span class="difficulty-dot active"></span>
+                            </div>
+                        </div>
+                        <p class="time-limit">Time limit: 10 seconds</p>
+                        <a href="binary-hash.html" class="btn">START VERIFICATION</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <div class="container">
+                <p>© 2025 Robot Verification Portal</p>
+                <p>Humans attempting to access this system will be detected and rejected</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
